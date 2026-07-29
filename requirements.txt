@@ -1,0 +1,8 @@
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+seaborn>=0.13
+sqlalchemy>=2.0
+pymysql>=1.1
+python-dotenv>=1.0
+jupyterlab>=4.0

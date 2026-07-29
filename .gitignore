@@ -1,0 +1,12 @@
+# Raw and derived data can be downloaded or regenerated locally.
+data/raw/*.csv
+data/processed/*.csv
+
+# Local environments and notebook artifacts
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.env
+.idea/
+
+# Keep the final PBIX file in the project when it is reasonably sized.

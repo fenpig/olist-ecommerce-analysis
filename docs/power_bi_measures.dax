@@ -1,0 +1,75 @@
+-- 在 Power BI 的“新建度量值”中逐条创建。
+
+Delivered Orders =
+CALCULATE(
+    DISTINCTCOUNT(order_fact[order_id]),
+    order_fact[is_delivered] = TRUE()
+)
+
+Delivered GMV =
+CALCULATE(
+    SUM(order_fact[gmv]),
+    order_fact[is_delivered] = TRUE()
+)
+
+Item GMV =
+SUM(order_item_fact[price]) + SUM(order_item_fact[freight_value])
+
+Average Order Value =
+DIVIDE([Delivered GMV], [Delivered Orders])
+
+Delivered Customers =
+CALCULATE(
+    DISTINCTCOUNT(order_fact[customer_unique_id]),
+    order_fact[is_delivered] = TRUE()
+)
+
+Repeat Customers =
+COUNTROWS(
+    FILTER(
+        VALUES(order_fact[customer_unique_id]),
+        CALCULATE(DISTINCTCOUNT(order_fact[order_id]), order_fact[is_delivered] = TRUE()) >= 2
+    )
+)
+
+Repeat Customer Rate =
+DIVIDE([Repeat Customers], [Delivered Customers])
+
+Average Review Score =
+CALCULATE(
+    AVERAGE(order_fact[review_score]),
+    order_fact[is_delivered] = TRUE()
+)
+
+Late Delivered Orders =
+CALCULATE(
+    DISTINCTCOUNT(order_fact[order_id]),
+    order_fact[is_late_delivery] = TRUE()
+)
+
+Orders With Delivery Promise =
+CALCULATE(
+    DISTINCTCOUNT(order_fact[order_id]),
+    NOT(ISBLANK(order_fact[is_late_delivery]))
+)
+
+Late Delivery Rate =
+DIVIDE([Late Delivered Orders], [Orders With Delivery Promise])
+
+Average Delivery Days =
+CALCULATE(
+    AVERAGE(order_fact[delivery_days]),
+    order_fact[is_delivered] = TRUE()
+)
+
+Late Order Review Score =
+CALCULATE(
+    AVERAGE(order_fact[review_score]),
+    order_fact[is_late_delivery] = TRUE()
+)
+
+On-Time Order Review Score =
+CALCULATE(
+    AVERAGE(order_fact[review_score]),
+    order_fact[is_late_delivery] = FALSE()
+)
