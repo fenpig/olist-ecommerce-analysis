@@ -4,9 +4,13 @@ data/processed/*.csv
 
 # Local environments and notebook artifacts
 .venv/
+.venv_broken_backup_20260805/
+.venv_t03_verify/
 __pycache__/
 .ipynb_checkpoints/
 .env
+.env.local
+.env.*.local
 .idea/
 
 # Keep the final PBIX file in the project when it is reasonably sized.

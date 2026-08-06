@@ -1,0 +1,11 @@
+-- File: 08_validation_queries.sql
+-- Goal: Define future SQL-to-Python metric reconciliation, grain checks, join-count checks, and Power BI KPI validation.
+-- Input objects: Implemented analysis tables, SQL metrics, Python metrics, and Power BI reconciliation scope.
+-- Output objects: Read-only validation result sets and documented differences.
+-- Prerequisites: T12 metrics, T13 analysis, T15 sensitivity analysis, and T16 reconciliation implementation.
+-- Repeatable: Yes, once implemented.
+-- Implementation task: T16.
+-- Current status: pending implementation.
+-- Safety: Validation must expose differences rather than adjust display values; no validation query is executed in T06.
+
+-- Implementation intentionally deferred to T16.

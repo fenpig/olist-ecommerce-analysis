@@ -1,0 +1,11 @@
+-- File: 05_delivery_metrics.sql
+-- Goal: Define future delivery duration, delay_days, delay-tier, delay-rate, and fulfillment metric queries.
+-- Input objects: T11 order-grain analysis table and the approved metric contract.
+-- Output objects: Read-only delivery metric result sets.
+-- Prerequisites: T11 analysis data set and T12 metric implementation.
+-- Repeatable: Yes, once implemented.
+-- Implementation task: T12.
+-- Current status: pending implementation.
+-- Safety: Metrics must use the approved calendar-day delay definition and explicit sample denominators; no metric query is executed in T06.
+
+-- Implementation intentionally deferred to T12.

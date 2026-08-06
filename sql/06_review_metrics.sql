@@ -1,0 +1,11 @@
+-- File: 06_review_metrics.sql
+-- Goal: Define future latest-review selection, multi-review/conflict audit, and review-rate metric queries.
+-- Input objects: T09 review audit output, T11 analysis data set, and the approved metric contract.
+-- Output objects: Read-only review metric result sets.
+-- Prerequisites: T09, T11, and T12 metric implementation.
+-- Repeatable: Yes, once implemented.
+-- Implementation task: T12 and T15 sensitivity analysis.
+-- Current status: pending implementation.
+-- Safety: The main score must not average multiple reviews; no review logic is written or executed in T06.
+
+-- Implementation intentionally deferred to T12 and T15.

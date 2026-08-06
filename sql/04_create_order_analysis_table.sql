@@ -1,0 +1,11 @@
+-- File: 04_create_order_analysis_table.sql
+-- Goal: Define the future one-row-per-order analysis table and related grain controls.
+-- Input objects: Verified clean orders, review audit outputs, and approved item/payment aggregation rules.
+-- Output objects: Order-grain analysis table, to be defined in T11.
+-- Prerequisites: T09, T10, and T11 grain-design verification.
+-- Repeatable: Pending implementation design.
+-- Implementation task: T11.
+-- Current status: pending implementation.
+-- Safety: The implementation must prevent order_items, payments, and reviews from multiplying order-level metrics; no table is created in T06.
+
+-- Implementation intentionally deferred to T11.

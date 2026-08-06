@@ -1,0 +1,11 @@
+-- File: 07_segment_analysis.sql
+-- Goal: Define future segmentation queries by customer_state, product category, seller_id, and time.
+-- Input objects: Verified analysis tables and an approved minimum-sample threshold.
+-- Output objects: Read-only segment result sets with visible sample counts.
+-- Prerequisites: T11 analysis data set, T13 segmentation design, and user confirmation of the minimum-sample threshold.
+-- Repeatable: Yes, once implemented.
+-- Implementation task: T13.
+-- Current status: pending implementation.
+-- Safety: No threshold is hard-coded until confirmed; no seller geography or delivery-distance metric is inferred; no query is executed in T06.
+
+-- Implementation intentionally deferred to T13.

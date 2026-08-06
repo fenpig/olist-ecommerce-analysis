@@ -1,0 +1,74 @@
+{
+  "task": "T09",
+  "generated_at": "2026-08-06T12:59:36",
+  "views_created": [
+    "vw_review_ranked",
+    "vw_order_review_audit",
+    "vw_order_review_selected"
+  ],
+  "rule": "latest valid review by answer timestamp, creation date, then review_id",
+  "reconciliation": {
+    "status": "pass",
+    "check_count": 8,
+    "checks": [
+      "review_population_and_conflicts",
+      "selection_basis_distribution",
+      "latest_score_distribution",
+      "minimum_score_distribution",
+      "latest_vs_minimum_difference",
+      "per_order_selected_id_score_and_basis",
+      "selected_view_uniqueness_and_source_validity",
+      "repeated_view_query_stability"
+    ],
+    "details": {
+      "population": {
+        "raw_review_rows": 99224,
+        "review_orders": 98673,
+        "single_review_orders": 98126,
+        "multi_review_orders": 547,
+        "conflicting_review_orders": 202,
+        "no_valid_score_orders": 0
+      },
+      "selection_basis_distribution": {
+        "latest_answer_timestamp": 547,
+        "single_review": 98126
+      },
+      "latest_score_distribution": {
+        "1": 11363,
+        "2": 3131,
+        "3": 8133,
+        "4": 19038,
+        "5": 57008
+      },
+      "minimum_score_distribution": {
+        "1": 11393,
+        "2": 3140,
+        "3": 8138,
+        "4": 19047,
+        "5": 56955
+      },
+      "latest_vs_minimum": {
+        "different_score_orders": 89,
+        "different_group_orders": 58,
+        "review_id_tiebreaker_orders": 0
+      },
+      "view_validation": {
+        "duplicate_selected_orders": 0,
+        "selected_review_not_in_raw": 0,
+        "invalid_selected_scores": 0,
+        "selected_orders": 98673,
+        "raw_review_orders": 98673
+      },
+      "view_definition_sha256": {
+        "vw_review_ranked": "C12799CB2B3FEBC1D34C004B7EA429681343673EDE905AE1DCD240F74AC5C104",
+        "vw_order_review_audit": "759FE7FE97C4B7463E7C81FF9D215130B3B103386339C5BB877DC324F9D7B2D5",
+        "vw_order_review_selected": "DB40B768D677AE23B47151D3357CD45271432E3E905F3FA3EA714555EC906D7F"
+      }
+    }
+  },
+  "limitations": [
+    "No delivery, geography, category, seller, or order-analysis data was joined.",
+    "Minimum review score is recorded only for later sensitivity analysis.",
+    "No claim is made that either review-selection rule is more accurate or causal."
+  ]
+}
