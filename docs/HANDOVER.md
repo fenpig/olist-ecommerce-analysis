@@ -3,7 +3,8 @@
 交接日期：2026-08-07
 项目根目录：仓库根目录
 当前分支：`main`
-当前 HEAD：`658816785f80848e46bc78e39c42a985cb237274`（`6588167 feat: build validated clean and analysis datasets`）
+T10–T11 数据集恢复点：`6588167 feat: build validated clean and analysis datasets`。
+当前 HEAD 不在本文档中硬编码；每次新任务接管时必须通过 `git rev-parse HEAD` 实时获取。
 
 本交接包用于新的 Codex 任务接管。当前只允许在用户单独授权后执行 T12；不得自动开始 T12 或 T13。
 
@@ -15,7 +16,7 @@
 - 尚未开始：T13 及以后。
 - 数据库：`olist_delivery_analysis`，MySQL 8.0.44。
 - Python：3.13.13；项目 `.venv` 可用，`pip check` 通过，无损坏依赖。
-- 最近恢复点：`6588167`，覆盖已验证的 T10–T11 清洗与分析数据集。
+- T10–T11 数据集恢复点：`6588167`，覆盖已验证的 T10–T11 清洗与分析数据集。
 
 ## 2. Git 状态与保护资产
 
@@ -113,11 +114,16 @@ git diff --check
 
 .\.venv\Scripts\python.exe --version
 .\.venv\Scripts\python.exe -m pip check
-
-.\.venv\Scripts\python.exe src\03_validate_review_selection.py --validate-existing
 ```
 
-随后执行只读数据库检查：确认 `DATABASE()` 为 `olist_delivery_analysis`、版本仍为 MySQL 8.0.44、原始表为 7 张、视图为上述 8 个，且 `vw_clean_orders`、`vw_order_analysis` 的粒度仍分别为一行一个 `order_id`。检查 T09 验证脚本前，先确认其仅以已有视图验证模式运行，不得执行创建语句。
+随后执行不刷新报告的数据库只读检查：确认 `DATABASE()` 为 `olist_delivery_analysis`、版本仍为 MySQL 8.0.44、原始表为 7 张、视图为上述 8 个，且 `vw_clean_orders`、`vw_order_analysis` 的粒度仍分别为一行一个 `order_id`。其中 T09 默认检查如下：
+
+- `vw_review_ranked`、`vw_order_review_audit`、`vw_order_review_selected` 三个视图均存在；
+- `vw_order_review_selected` 保持订单级一行一个 `order_id`；
+- 多评价订单和评分冲突订单等关键计数仍符合 T09 已验收基线；
+- 已有 `reports/validation/t09_review_selection_summary.json` 的状态为通过。
+
+不得在只读接管检查中自动运行 `.\.venv\Scripts\python.exe src\03_validate_review_selection.py --validate-existing`。该命令不会修改数据库对象，但会刷新 `reports/validation/t09_review_selection_summary.json`。需要运行时，必须事先允许更新该报告文件；或者在运行后核对差异仅为生成时间戳变化，再恢复报告文件。
 
 ## 8. 待确认事项与风险
 
