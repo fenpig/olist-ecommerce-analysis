@@ -9,6 +9,7 @@
 | DEC-003 | 已确认 | 2026-08-05 | 月度趋势的边界月份 |
 | DEC-004 | 已确认 | 2026-08-05 | 一期地理与卖家分析范围 |
 | DEC-005 | 已确认 | 2026-08-07 | 日期异常保留、交运时长排除与敏感性对照 |
+| DEC-006 | 已确认 | 2026-08-07 | 全量正延迟标记与正式配送延迟指标的区分 |
 
 ## DEC-001：主延迟口径与分类
 
@@ -46,6 +47,14 @@
 - **交运相关时长**：23 条 `is_delivered_before_carrier = 1` 的订单不进入交运到送达、物流在途等依赖 `order_delivered_carrier_date` 的指标。若实际送达和预计送达日期完整，仍可参与 `delay_days` 与延迟状态分析。
 - **标记不变**：T10 的 `is_delivery_eligible`、`is_review_relation_eligible` 和所有日期异常标记不得因本决策改写。
 - **敏感性分析**：后续配送—评分关系必须同时报告主口径（符合主样本条件的全部订单）及对照口径（排除 `has_date_anomaly = 1`），比较主要指标、关联方向和结论是否明显变化。
+
+## DEC-006：全量正延迟标记与正式配送延迟指标
+
+- **`is_delayed` 的含义**：它是记录级日期差事实标记；`delay_days > 0` 为 1，`delay_days <= 0` 为 0，`delay_days` 为空时为 `NULL`。它本身不判断订单是否属于正式配送分析样本。
+- **正式配送样本**：`is_delivery_eligible = 1` 是正式配送分析资格。任何正式配送延迟订单数或延迟率，必须同时限定该资格与 `delay_days > 0`。
+- **正式指标**：配送可用延迟订单数为 6,534，即 `COUNT(DISTINCT CASE WHEN is_delivery_eligible = 1 AND delay_days > 0 THEN order_id END)`；正式延迟率分母为 96,470 个配送可用订单。
+- **全量审计分布**：`is_delayed = 1` 的全量记录数为 6,535。T10/T11 中的 6,535 是正确的全量字段分布，但不是正式配送延迟订单数。
+- **非配送可用订单**：canceled 等非配送可用订单即使具有正 `delay_days`，也不进入正式配送延迟指标。当前唯一差异订单 `1950d777989f6a877539f53795b4c3c3` 为 canceled，`delay_days = 12`、`is_delayed = 1`、`is_delivery_eligible = 0`。
 
 ## 变更控制
 

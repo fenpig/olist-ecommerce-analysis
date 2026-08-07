@@ -23,8 +23,10 @@
 | `delay_hours_raw` | `order_delivered_customer_date - order_estimated_delivery_date` | 不适用 | 连续时间差；仅作审查/补充分析，不用于主分类。 |
 | `has_date_anomaly` | 任一已定义订单日期顺序异常为真 | 不适用 | 仅审计和统计；未经确认不得作为排除条件。 |
 | `delivery_timing_category` | `delay_days <= 0`：按时或提前；1–3：轻微；4–7：中度；>7：严重 | 不适用 | 类别互斥且覆盖全部 `delay_days` 整数值。 |
-| 延迟订单数量 | `delay_days > 0` 的订单数 | 分子为延迟订单 | 分母若需比例，使用配送履约可用订单。 |
-| 延迟率 | `delay_days > 0` 的订单数 ÷ `is_delivery_eligible` 订单数 | 延迟订单 / 配送履约可用订单 | 不把取消、未签收或日期缺失订单混入分母。 |
+| `is_delayed` | 记录级日期差标记：`delay_days > 0` 为 1；`delay_days <= 0` 为 0；`delay_days` 为 `NULL` 时为 `NULL` | 不适用 | 该字段只陈述日期差事实，本身不判断订单是否属于正式配送分析样本。 |
+| `delivery_eligible_delayed_order_count`（正式配送延迟订单数） | `COUNT(DISTINCT CASE WHEN is_delivery_eligible = 1 AND delay_days > 0 THEN order_id END)` | 配送可用且正延迟订单 | 当前验证结果为 6,534；这是正式配送延迟率的唯一分子。 |
+| `all_records_positive_delay_count`（全量正延迟标记记录数） | `COUNT(DISTINCT CASE WHEN is_delayed = 1 THEN order_id END)` | 全部 `is_delayed = 1` 记录 | 当前验证结果为 6,535；仅用于全量字段分布审计，不能替代正式配送延迟订单数。 |
+| 正式延迟率 | `delivery_eligible_delayed_order_count` ÷ `is_delivery_eligible = 1` 的订单数 | 6,534 / 96,470 | 当前验证结果为 6.77%；不得把全量 `is_delayed` 分布作为分子。 |
 | 平均延迟天数 | `delay_days` 的均值 | 不适用 | 必须在图表与报告中注明样本范围；若指“延迟订单平均”，另明确筛选 `delay_days > 0`。 |
 | 延迟天数中位数 | `delay_days` 的中位数 | 不适用 | 同上。 |
 

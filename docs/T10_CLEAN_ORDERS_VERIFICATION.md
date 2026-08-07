@@ -62,3 +62,9 @@ T10 只新增 `vw_clean_orders`。该视图从 `orders_raw` 左连接一行一�
 - [非敏感汇总 JSON](../reports/validation/t10_clean_orders_summary.json)
 
 回滚仅限删除 T10 新增的 `vw_clean_orders` 和 `clean_orders.csv`，且必须经用户单独确认；不得触碰 T09 视图、原始表或原始 CSV。T11 尚未开始，继续前必须获得新的单独授权。
+
+## 口径澄清 / 勘误（2026-08-07）
+
+本记录中的 `is_delayed = 0 / 1 / NULL` 分布 `89,941 / 6,535 / 2,965` 保持原样。这里的 6,535 是全量订单中 `is_delayed = 1` 的字段分布，不是限制 `is_delivery_eligible = 1` 后的正式配送延迟订单数。
+
+正式配送可用延迟订单数为 6,534，口径为 `is_delivery_eligible = 1 AND delay_days > 0`。两者差异仅为订单 `1950d777989f6a877539f53795b4c3c3`：其状态为 canceled、`delay_days = 12`、`is_delayed = 1`，但 `is_delivery_eligible = 0`。数据、`vw_clean_orders` 视图和字段计算均无错误；该订单应保留在全量字段审计中，但不进入正式配送延迟指标。

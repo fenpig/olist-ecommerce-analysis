@@ -44,3 +44,9 @@ T11 新增四个可重建视图：`vw_order_items_aggregated`、`vw_order_paymen
 - [非敏感汇总 JSON](../reports/validation/t11_analysis_datasets_summary.json)
 
 回滚仅限在用户单独确认后删除这四个 T11 视图和两个 T11 CSV；不得触碰原始表、T09/T10 视图、原始 CSV、README 或 PBIX。
+
+## 口径澄清 / 勘误（2026-08-07）
+
+本记录所述“延迟分类与 T10 保持一致”指全量字段传播；T11 JSON 中的延迟分类分布同样保留原样。其中正延迟分类合计 6,535，表示全量 `is_delayed = 1` 记录数，而不是限制 `is_delivery_eligible = 1` 后的正式配送延迟订单数。
+
+正式配送可用延迟订单数为 6,534，口径为 `is_delivery_eligible = 1 AND delay_days > 0`。差异订单 `1950d777989f6a877539f53795b4c3c3` 为 canceled，`delay_days = 12`、`is_delayed = 1`、`is_delivery_eligible = 0`。`vw_order_analysis` 对 T10 字段的传播、底层数据与 processed CSV 均无错误；该订单仅不属于正式配送样本。

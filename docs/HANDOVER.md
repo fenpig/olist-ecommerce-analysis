@@ -66,11 +66,14 @@ T10–T11 数据集恢复点：`6588167 feat: build validated clean and analysis
 | 评分冲突订单 | 202 |
 | 配送可用订单 | 96,470 |
 | 评分关系可用订单 | 95,824 |
-| 延迟订单 | 6,535 |
+| 配送可用延迟订单 | 6,534 |
+| 全量 `is_delayed = 1` 记录 | 6,535 |
 | 日期异常订单 | 1,382 |
 | 实际送达早于交运 | 23 |
 
 完整的 T09、T10、T11 验收证据分别见 `docs/T09_REVIEW_SELECTION_AUDIT.md`、`docs/T10_CLEAN_ORDERS_VERIFICATION.md`、`docs/T11_ANALYSIS_DATASETS_VERIFICATION.md`，以及 `reports/validation/` 下相应 JSON。
+
+正式 T12 延迟率使用 `6,534 / 96,470`。两项计数相差 1 个 canceled 订单：该订单具有正日历日日期差，因而在全量 `is_delayed = 1` 审计分布中保留，但不具备配送可用资格，不能计入正式配送延迟订单数或延迟率。
 
 ## 5. 已冻结的核心口径
 
