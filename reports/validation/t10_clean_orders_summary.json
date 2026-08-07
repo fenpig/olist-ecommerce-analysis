@@ -1,0 +1,195 @@
+{
+  "task": "T10",
+  "generated_at": "2026-08-07T08:32:52",
+  "database_object": "vw_clean_orders",
+  "database_object_created_this_invocation": false,
+  "execution_mode": "validate_existing",
+  "rule": "calendar-day DATEDIFF delay_days; precise-second TIMESTAMPDIFF divided by 3600.0 delay_hours_raw",
+  "preflight": {
+    "orders_raw": {
+      "order_rows": 99441,
+      "distinct_order_ids": 99441,
+      "missing_order_ids": 0.0
+    },
+    "t09_view_hashes": {
+      "vw_review_ranked": "C12799CB2B3FEBC1D34C004B7EA429681343673EDE905AE1DCD240F74AC5C104",
+      "vw_order_review_audit": "759FE7FE97C4B7463E7C81FF9D215130B3B103386339C5BB877DC324F9D7B2D5",
+      "vw_order_review_selected": "DB40B768D677AE23B47151D3357CD45271432E3E905F3FA3EA714555EC906D7F"
+    },
+    "clean_orders_csv_before": {
+      "path": "data\\processed\\clean_orders.csv",
+      "size_bytes": 36968988,
+      "sha256": "8441544F3B96F761939D16778841DFAC489360CC6BCAF3EF33835FC4F3DA1E5E"
+    }
+  },
+  "reconciliation": {
+    "status": "pass",
+    "check_count": 7,
+    "checks": [
+      "all_clean_order_fields_per_order_sql_python",
+      "required_population_distributions_reasons_anomalies_and_review_audit",
+      "one_row_per_order_and_no_missing_order_id",
+      "delay_formula_category_coverage_and_null_handling",
+      "boundary_months_marked_without_row_exclusion",
+      "csv_utf8_fixed_columns_sorted_and_one_row_per_order",
+      "t09_view_definitions_unchanged"
+    ],
+    "details": {
+      "sql_python": {
+        "population": {
+          "order_rows": 99441,
+          "distinct_order_ids": 99441,
+          "missing_order_ids": 0,
+          "delivered_orders": 96478,
+          "delivery_eligible_orders": 96470,
+          "review_relation_eligible_orders": 95824
+        },
+        "boundary_month_orders": {
+          "2016-09": 4,
+          "2016-12": 1,
+          "2018-09": 16,
+          "2018-10": 4
+        },
+        "is_primary_month_distribution": {
+          "0": 25,
+          "1": 99416
+        },
+        "delay_category_distribution": {
+          "moderate_delay": 1802,
+          "not_applicable": 2965,
+          "on_time_or_early": 89941,
+          "severe_delay": 2863,
+          "slight_delay": 1870
+        },
+        "is_delayed_distribution": {
+          "0": 89941,
+          "1": 6535,
+          "NULL": 2965
+        },
+        "delivery_eligibility_reason_distribution": {
+          "eligible": 96470,
+          "missing_actual_delivery_date": 8,
+          "not_delivered": 2963
+        },
+        "review_relation_eligibility_reason_distribution": {
+          "delivery_ineligible": 2971,
+          "eligible": 95824,
+          "no_selected_review": 646
+        },
+        "date_anomaly_counts": {
+          "is_approved_before_purchase": 0,
+          "is_carrier_before_purchase": 166,
+          "is_carrier_before_approval": 1359,
+          "is_delivered_before_purchase": 0,
+          "is_delivered_before_carrier": 23,
+          "is_estimated_before_purchase": 0,
+          "has_date_anomaly": 1382
+        },
+        "delay_days_summary": {
+          "minimum": -147,
+          "maximum": 188,
+          "median": -12.0
+        },
+        "selected_review_score_distribution": {
+          "1": 11363,
+          "2": 3131,
+          "3": 8133,
+          "4": 19038,
+          "5": 57008,
+          "NULL": 768
+        },
+        "review_audit_counts": {
+          "multiple_review_orders": 547,
+          "conflicting_review_orders": 202
+        }
+      },
+      "sample_orders": {
+        "early_delivery": {
+          "order_id": "00010242fe8c5a6d1ba2dd792cb16214",
+          "order_delivered_customer_date": "2017-09-20 23:43:48",
+          "order_estimated_delivery_date": "2017-09-29 00:00:00",
+          "delay_days": -9,
+          "delay_hours_raw": -192.27,
+          "delay_category": "on_time_or_early"
+        },
+        "same_day_delivery": {
+          "order_id": "0005a1a1728c9d785b8e2b08b904576c",
+          "order_delivered_customer_date": "2018-03-29 18:17:31",
+          "order_estimated_delivery_date": "2018-03-29 00:00:00",
+          "delay_days": 0,
+          "delay_hours_raw": 18.2919,
+          "delay_category": "on_time_or_early"
+        },
+        "one_day_delay": {
+          "order_id": "00526a9d4ebde463baee25f386963ddc",
+          "order_delivered_customer_date": "2018-08-16 19:58:24",
+          "order_estimated_delivery_date": "2018-08-15 00:00:00",
+          "delay_days": 1,
+          "delay_hours_raw": 43.9733,
+          "delay_category": "slight_delay"
+        },
+        "three_day_delay": {
+          "order_id": "00324b3eda39ba5ecce3945823e3594c",
+          "order_delivered_customer_date": "2018-05-03 20:29:24",
+          "order_estimated_delivery_date": "2018-04-30 00:00:00",
+          "delay_days": 3,
+          "delay_hours_raw": 92.49,
+          "delay_category": "slight_delay"
+        },
+        "four_day_delay": {
+          "order_id": "0017afd5076e074a48f1f1a4c7bac9c5",
+          "order_delivered_customer_date": "2017-05-23 08:32:07",
+          "order_estimated_delivery_date": "2017-05-19 00:00:00",
+          "delay_days": 4,
+          "delay_hours_raw": 104.5353,
+          "delay_category": "moderate_delay"
+        },
+        "seven_day_delay": {
+          "order_id": "00c00d5b36157595e21108ba1da2828f",
+          "order_delivered_customer_date": "2017-10-04 18:14:24",
+          "order_estimated_delivery_date": "2017-09-27 00:00:00",
+          "delay_days": 7,
+          "delay_hours_raw": 186.24,
+          "delay_category": "moderate_delay"
+        },
+        "over_seven_day_delay": {
+          "order_id": "001c85b5f68d2be0cb0797afc9e8ce9a",
+          "order_delivered_customer_date": "2017-12-22 18:37:40",
+          "order_estimated_delivery_date": "2017-12-14 00:00:00",
+          "delay_days": 8,
+          "delay_hours_raw": 210.6278,
+          "delay_category": "severe_delay"
+        },
+        "missing_delivery_date": {
+          "order_id": "0010dedd556712d7bb69a19cb7bbd37a",
+          "order_delivered_customer_date": null,
+          "order_estimated_delivery_date": "2017-11-03 00:00:00",
+          "delay_days": null,
+          "delay_hours_raw": null,
+          "delay_category": "not_applicable"
+        }
+      },
+      "float_tolerance": {
+        "delay_hours_raw_absolute_tolerance_hours": 5e-05,
+        "delay_hours_raw_absolute_tolerance_seconds": 0.18,
+        "rationale": "MySQL decimal division by 3600.0 retains four decimal hours; the calculation still starts from precise seconds and does not use TIMESTAMPDIFF(HOUR)."
+      },
+      "csv": {
+        "path": "data\\processed\\clean_orders.csv",
+        "size_bytes": 36968988,
+        "sha256": "8441544F3B96F761939D16778841DFAC489360CC6BCAF3EF33835FC4F3DA1E5E"
+      },
+      "t09_view_hashes_after": {
+        "vw_review_ranked": "C12799CB2B3FEBC1D34C004B7EA429681343673EDE905AE1DCD240F74AC5C104",
+        "vw_order_review_audit": "759FE7FE97C4B7463E7C81FF9D215130B3B103386339C5BB877DC324F9D7B2D5",
+        "vw_order_review_selected": "DB40B768D677AE23B47151D3357CD45271432E3E905F3FA3EA714555EC906D7F"
+      },
+      "vw_clean_orders_definition_sha256": "7007C7E1A38F1B1E2671422317592F87F936201170758AFED189AF6EC00CD983"
+    }
+  },
+  "limitations": [
+    "Date anomalies are retained as flags; T10 does not alter sample inclusion beyond explicit eligibility markers.",
+    "Boundary-month flags affect only later trend analysis; no T10 row is excluded.",
+    "No T11 analysis table or business conclusion is created."
+  ]
+}

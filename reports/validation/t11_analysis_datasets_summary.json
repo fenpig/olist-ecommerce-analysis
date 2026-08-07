@@ -1,0 +1,142 @@
+{
+  "task": "T11",
+  "generated_at": "2026-08-07T08:51:02",
+  "views": [
+    "vw_order_items_aggregated",
+    "vw_order_payments_aggregated",
+    "vw_order_analysis",
+    "vw_order_item_analysis"
+  ],
+  "execution_mode": "validate_existing",
+  "preflight": {
+    "raw_counts": {
+      "orders": 99441,
+      "items": 112650,
+      "payments": 103886,
+      "customers": 99441
+    },
+    "join_key_duplicates": {
+      "duplicate_item_keys": 0,
+      "duplicate_customer_ids": 0,
+      "duplicate_translation_keys": 0
+    },
+    "t10_clean_view_hash": "7007C7E1A38F1B1E2671422317592F87F936201170758AFED189AF6EC00CD983",
+    "existing_outputs": []
+  },
+  "reconciliation": {
+    "status": "pass",
+    "check_count": 6,
+    "checks": [
+      "order_analysis_one_row_per_order",
+      "order_item_analysis_matches_raw_item_grain",
+      "per_order_item_and_payment_aggregates",
+      "money_totals_within_0_01",
+      "customer_join_and_t10_fields_propagated",
+      "csv_outputs_row_counts"
+    ],
+    "details": {
+      "summary": {
+        "order_rows": 99441,
+        "item_rows": 112650,
+        "customer_matches": 99441,
+        "item_flags": {
+          "has_item_record": 98666,
+          "has_multiple_items": 9803,
+          "has_multiple_products": 3236,
+          "has_multiple_sellers": 1278,
+          "has_multiple_categories": 727
+        },
+        "payment_flags": {
+          "has_payment_record": 99440,
+          "has_multiple_payment_records": 2961,
+          "has_multiple_payment_types": 2246
+        },
+        "money_totals": {
+          "item_value_total": 13591643.7,
+          "freight_value_total": 2251909.54,
+          "payment_value_total": 16008872.12
+        },
+        "payment_difference": {
+          "zero_or_within_0_01": 98296,
+          "positive_over_0_01": 286,
+          "negative_under_minus_0_01": 83,
+          "missing_payment_records": 1,
+          "missing_item_records": 775,
+          "absolute_difference": {
+            "min": 0.0,
+            "median": 0.0,
+            "max": 182.80999999999995
+          }
+        },
+        "item_detail": {
+          "missing_seller_id": 0,
+          "missing_product_id": 0,
+          "missing_category": 1603,
+          "missing_translation": 24,
+          "item_total": 15843553.24
+        },
+        "propagated_distributions": {
+          "delay_category": {
+            "on_time_or_early": 89941,
+            "not_applicable": 2965,
+            "severe_delay": 2863,
+            "slight_delay": 1870,
+            "moderate_delay": 1802
+          },
+          "selected_review_score": {
+            "5.0": 57008,
+            "4.0": 19038,
+            "1.0": 11363,
+            "3.0": 8133,
+            "2.0": 3131,
+            "NULL": 768
+          },
+          "has_date_anomaly": {
+            "0": 98059,
+            "1": 1382
+          },
+          "is_delivered_before_carrier": {
+            "0": 99418,
+            "1": 23
+          }
+        },
+        "base_sample_groups": {
+          "seller_ids_with_items": 3095,
+          "product_categories_with_items": 73,
+          "customer_states": 27
+        }
+      },
+      "samples": {
+        "single_item_single_payment": "00010242fe8c5a6d1ba2dd792cb16214",
+        "multiple_items": "0008288aa423d2a3f00fcb17cd7d8719",
+        "multiple_sellers": "002f98c0f7efd42638ed6100ca699b42",
+        "multiple_payment_records": "0016dfedd97fc2950e388d2971d718c7",
+        "multiple_payment_types": "0016dfedd97fc2950e388d2971d718c7",
+        "multiple_categories": "002f98c0f7efd42638ed6100ca699b42",
+        "missing_payment": "bfbd0f9bdef84302105ad712db648a6c",
+        "missing_item": "0010dedd556712d7bb69a19cb7bbd37a"
+      },
+      "money_tolerance": 0.01,
+      "order_csv": {
+        "path": "data\\processed\\order_analysis.csv",
+        "size_bytes": 55474014,
+        "sha256": "85B331C62973B01A1AE9FE6595DDA1FA481FD9C7E269C7E7A29403AE8A7273A6"
+      },
+      "item_csv": {
+        "path": "data\\processed\\order_item_analysis.csv",
+        "size_bytes": 63977872,
+        "sha256": "4644077FC969A71055D0EDFCBE3BE0149C5BBA4449DEF15EF0038F34C6201216"
+      },
+      "view_definition_sha256": {
+        "vw_order_items_aggregated": "0D098E4BBCA88AF2512E562402AE61F9D6222FAEAED026053452378ED75E7614",
+        "vw_order_payments_aggregated": "D06A6ED420E2D467084483547680ECCE34C65B8A8A35D8DDA00EB00DF9AA4444",
+        "vw_order_analysis": "F84A92EEDCC7F4F3560E03C91F96958AFD14AF8DBFC2380D27DD68B1C53ABE93",
+        "vw_order_item_analysis": "ABFDE7274F9D4EAB9CFDBB6395CD72BD6473B55930B17CBAB96F8587E61E1FC5"
+      }
+    }
+  },
+  "limitations": [
+    "No statistical test, threshold decision, business conclusion, Power BI work, or T12 work is included.",
+    "Date anomalies remain flags; only is_transit_duration_eligible gates carrier-dependent durations."
+  ]
+}

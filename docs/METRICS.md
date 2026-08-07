@@ -11,6 +11,9 @@
 | `is_valid_review` | `review_score` 属于 1、2、3、4、5。未评价不填充评分。 |
 | `is_review_relation_eligible` | `is_delivery_eligible = 1`，且存在按 DEC-002 选出的有效订单级评价；无法排序且评分冲突的订单为 0。 |
 | `is_primary_month` | 订单下单月份不属于 2016-09、2016-12、2018-09、2018-10。仅用于主要月度趋势，不影响全量统计。 |
+| `delivery_eligibility_reason` | 配送可用标记的固定优先级原因。 | `not_delivered`、缺失实际/预计送达日期或 `eligible` | 不删除原始订单。 |
+| `review_relation_eligibility_reason` | 评分关系可用标记的固定优先级原因。 | `delivery_ineligible`、`no_selected_review`、`invalid_selected_review_score` 或 `eligible` | 不因多评或评分冲突自动排除。 |
+| `is_transit_duration_eligible` | 已配送可用、交运日期完整且实际送达不早于交运。 | 不适用 | 仅控制交运到送达等依赖交运日期的时长指标；不改写配送或评分关系可用标记。 |
 
 ## 2. 履约与延迟指标
 
@@ -18,6 +21,7 @@
 | --- | --- | --- | --- |
 | `delay_days` | `DATE(order_delivered_customer_date) - DATE(order_estimated_delivery_date)` | 不适用 | 整数日；仅 `is_delivery_eligible = 1`。 |
 | `delay_hours_raw` | `order_delivered_customer_date - order_estimated_delivery_date` | 不适用 | 连续时间差；仅作审查/补充分析，不用于主分类。 |
+| `has_date_anomaly` | 任一已定义订单日期顺序异常为真 | 不适用 | 仅审计和统计；未经确认不得作为排除条件。 |
 | `delivery_timing_category` | `delay_days <= 0`：按时或提前；1–3：轻微；4–7：中度；>7：严重 | 不适用 | 类别互斥且覆盖全部 `delay_days` 整数值。 |
 | 延迟订单数量 | `delay_days > 0` 的订单数 | 分子为延迟订单 | 分母若需比例，使用配送履约可用订单。 |
 | 延迟率 | `delay_days > 0` 的订单数 ÷ `is_delivery_eligible` 订单数 | 延迟订单 / 配送履约可用订单 | 不把取消、未签收或日期缺失订单混入分母。 |
@@ -55,3 +59,5 @@
 ## 5. 必做的口径对照
 
 配送时效与评分关系的主分析使用“最新有效评价”。完成后必须以“同订单最低有效评分”重算同一组核心指标和图表，并记录与主口径的样本量、平均评分、低评分率及主要分层排名差异。该对照用于稳健性判断，不替代主口径。
+
+同时必须进行日期异常敏感性验证：主口径保留符合样本条件的全部订单，对照口径排除 `has_date_anomaly = 1`。比较主要指标、关联方向和结论是否明显变化。日期异常订单保留在完整订单数据及 `delay_days` 分析中；仅 `is_delivered_before_carrier = 1` 的订单不得进入依赖交运日期的在途时长指标。
